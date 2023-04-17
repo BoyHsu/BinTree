@@ -16,12 +16,7 @@ class BST<T: Comparable>: BinTree<T> {
         if let x = search(e) {
             return x
         }
-        let x = BinNode(data: e)
-        if _hot.data > x.data {
-            _hot.left = x
-        } else {
-            _hot.right = x
-        }
+        let x = BinNode(data: e, parent: _hot)
         size += 1
         updateHeightAbove(x)
         
@@ -41,7 +36,8 @@ class BST<T: Comparable>: BinTree<T> {
         return true
     }
     
-    private var _hot: BinNode<T>!
+    var _hot: BinNode<T>!
+    
     func connect34(_ a: BinNode<T>, _ b: BinNode<T>, _ c: BinNode<T>, _ x0: BinNode<T>?, _ x1: BinNode<T>?, _ x2 : BinNode<T>?, _ x3: BinNode<T>?) -> BinNode<T> {
         a.left = x0
         a.right = x1
@@ -99,6 +95,7 @@ class BST<T: Comparable>: BinTree<T> {
             }
         } else {
             root = succ
+            root?.parent = nil
         }
     }
     

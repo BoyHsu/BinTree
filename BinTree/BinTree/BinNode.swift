@@ -7,7 +7,7 @@
 
 import Foundation
 
-class BinNode<T> where T: Any {
+class BinNode<T: Comparable> {
     
     enum RBColor {
         case red, black
@@ -40,6 +40,14 @@ class BinNode<T> where T: Any {
         self.height = height
         self.npl = npl
         self.color = color
+        
+        if let parent = parent {
+            if parent.data > data {
+                parent.left = self
+            } else {
+                parent.right = self
+            }
+        }
     }
     
     func updateHeight() {

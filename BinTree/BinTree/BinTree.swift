@@ -7,7 +7,7 @@
 
 import Foundation
 
-class BinTree<T> {
+class BinTree<T: Comparable> {
     var size = 0
     var root: BinNode<T>? = nil
     
@@ -21,6 +21,15 @@ class BinTree<T> {
             x?.updateHeight()
             x = x?.parent
         }
+    }
+    
+    func updateHeightBelow(_ x: BinNode<T>?) {
+        if x == nil {
+            return
+        }
+        updateHeightBelow(x?.left)
+        updateHeightBelow(x?.right)
+        updateHeight(x!)
     }
     
     func empty() -> Bool {
@@ -50,6 +59,8 @@ class BinTree<T> {
     func attachAsRoot(_ x: BinNode<T>) -> BinNode<T> {
         root = x
         size = x.size()
+        updateHeightBelow(x)
+        
         return root!
     }
     
