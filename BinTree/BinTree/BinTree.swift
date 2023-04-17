@@ -8,14 +8,14 @@
 import Foundation
 
 class BinTree<T> {
-    private(set) var size = 0
-    private(set) var root: BinNode<T>? = nil
+    var size = 0
+    var root: BinNode<T>? = nil
     
-    private func updateHeight(_ x: BinNode<T>) {
+    func updateHeight(_ x: BinNode<T>) {
         x.updateHeight()
     }
     
-    private func updateHeightAbove(_ x: BinNode<T>) {
+    func updateHeightAbove(_ x: BinNode<T>) {
         var x: BinNode<T>? = x
         while x !== nil {
             x?.updateHeight()
@@ -47,6 +47,12 @@ class BinTree<T> {
         return x.right!
     }
     
+    func attachAsRoot(_ x: BinNode<T>) -> BinNode<T> {
+        root = x
+        size = x.size()
+        return root!
+    }
+    
     func attachAsLeftChild(_ x: BinNode<T>, e: BinTree) -> BinNode<T> {
         if x.left != nil {
             size -= 1
@@ -68,14 +74,14 @@ class BinTree<T> {
         return x
     }
     
-    func remove(at x: BinNode<T>) -> Int {
+    func remove(_ x: BinNode<T>) -> Int {
         x.removeFromParent()
         size -= x.size()
         return size
     }
     
     func secede(_ x: BinNode<T>) -> BinTree {
-        _ = remove(at: x)
+        _ = remove(x)
         let tree = BinTree()
         tree.root = x
         tree.size = x.size()
