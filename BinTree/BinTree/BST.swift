@@ -41,15 +41,15 @@ class BST<T: Comparable>: BinTree<T> {
     func connect34(_ a: BinNode<T>, _ b: BinNode<T>, _ c: BinNode<T>, _ x0: BinNode<T>?, _ x1: BinNode<T>?, _ x2 : BinNode<T>?, _ x3: BinNode<T>?) -> BinNode<T> {
         a.left = x0
         a.right = x1
-        a.updateHeight()
+        updateHeight(a)
         
         c.left = x2
         c.right = x3
-        c.updateHeight()
+        updateHeight(c)
         
         b.left = a
         b.right = c
-        b.updateHeight()
+        updateHeight(c)
         
         return b
     }
@@ -111,8 +111,8 @@ class BST<T: Comparable>: BinTree<T> {
         } else {
             w = w?.succ()
             x.data = w!.data
+            succ = w?.right
             let u = w?.parent
-            succ = w
             if u === x {
                 u?.right = w?.right
             } else {
@@ -120,7 +120,8 @@ class BST<T: Comparable>: BinTree<T> {
             }
         }
         
-        succ?.parent = w?.parent
+        _hot = w?.parent
+        succ?.parent = _hot
         
         return succ
     }

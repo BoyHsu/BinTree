@@ -18,7 +18,7 @@ class BinTree<T: Comparable> {
     func updateHeightAbove(_ x: BinNode<T>) {
         var x: BinNode<T>? = x
         while x !== nil {
-            x?.updateHeight()
+            updateHeight(x!)
             x = x?.parent
         }
     }

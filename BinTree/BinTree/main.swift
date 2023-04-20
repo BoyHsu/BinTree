@@ -80,4 +80,35 @@ for (before, val, after) in [
     assert(avl.root.serialize() == after)
 }
 
+for str in [
+    "{2B,3R}",
+    "{2B,1B,4R,0R,#,3B,5B,#,#,#,#,#,6R}"
+] {
+    let rb = RedBlack.init(str)
+    assert(rb.serialize() == str)
+}
+
+for (before, val, after) in [
+    ("{3B,2R}", 1, "{2B,1R,3R}"), // RR-1
+    ("{4B,3B,5B,2R,#}", 1, "{4B,2B,5B,1R,3R}"), // RR-1
+    ("{4B,3R,5R}", 2, "{4B,3B,5B,2R}"), // RR-2 -> rootR
+    ("{7B,5R,9R,3B,6B,8B,10B,2R,4R}", 1, "{7B,5B,9B,3R,6B,8B,10B,2B,4B,#,#,#,#,#,#,1R}") // RR-2 -> RR-2 -> rootR
+] {
+    let rb = RedBlack(before)
+    _ = rb?.insert(val)
+    let str = rb.serialize()
+    assert(str == after)
+}
+
+
+for (before, val, after) in [
+    ("{6B,4B,8B,2R,5B,7B,9B,1B,3B}", 8, "{4B,2B,6B,1B,3B,5B,9B,#,#,#,#,#,#,7R}"), // BB-2B -> BB-1
+    ("{6B,4B,8B,2R,5B,7B,9B,1B,3B}", 5, "{6B,2B,8B,1B,4B,7B,9B,#,#,3R}"),//BB-3->BB2R
+] {
+    let rb = RedBlack(before)
+    _ = rb?.remove(val)
+    assert(rb.serialize() == after)
+}
+
+
 print("done")

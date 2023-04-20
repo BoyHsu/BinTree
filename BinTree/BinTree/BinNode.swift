@@ -83,7 +83,7 @@ class BinNode<T: Comparable> {
     }
     
     func size() -> Int {
-        return (self.left?.size()) ?? 0 + (self.right?.size() ?? 0) + 1
+        return (self.left?.size() ?? 0) + (self.right?.size() ?? 0) + 1
     }
     
     typealias VST = (T)->Void
@@ -192,6 +192,48 @@ extension BinNode {
     
     var hasBothChild: Bool {
         return hasLeftChild && hasRightChild
+    }
+    
+    var uncle: BinNode? {
+        return parent?.sibling
+    }
+    
+    var sibling: BinNode? {
+        guard let p = parent else { return nil }
+        return isLeftChild ? p.right : p.left
+    }
+}
+
+extension BinNode {// for rb
+    static func isBlack(_ x: BinNode?) -> Bool {
+        return x?.color != .red
+    }
+    
+    static func rb_stature(_ x: BinNode?) -> Int {
+        return x?.height ?? 0
+    }
+    
+    var isBlack: Bool {
+        return Self.isBlack(self)
+    }
+    
+    var isRed: Bool {
+        return color == .red
+    }
+    
+    func rb_updateHeight() {
+        height = (isBlack ? 1 : 0) + max(Self.rb_stature(self.left), Self.rb_stature(self.right))
+    }
+    
+    /**
+     RedBlack高度更新条件 
+     */
+    func blackHeightUpdated() -> Bool {
+        let leftChildHeight = Self.rb_stature(self.left)
+        let rightChildHeight = Self.rb_stature(self.right)
+        
+        return leftChildHeight == rightChildHeight
+        && height == (self.isBlack ? leftChildHeight + 1 : leftChildHeight)
     }
 }
 
